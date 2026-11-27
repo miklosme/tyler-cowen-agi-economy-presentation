@@ -1,0 +1,32 @@
+@import '@fontsource/fraunces/300.css';
+@import '@fontsource/fraunces/300-italic.css';
+@import '@fontsource/fraunces/400.css';
+@import '@fontsource/fraunces/400-italic.css';
+@import '@fontsource/fraunces/600.css';
+@import '@fontsource/geist-sans/300.css';
+@import '@fontsource/geist-sans/400.css';
+@import '@fontsource/geist-sans/500.css';
+@import '@fontsource/geist-mono/400.css';
+@import '@fontsource/geist-mono/500.css';
+
+:root {
+  --ink: #04050a;
+  --ink-2: #0a0c16;
+  --paper: #f3eee4;
+  --paper-dim: rgba(243, 238, 228, 0.8);
+  --mute: #8d8a9b;
+  --ember: #ffb547;
+  --ember-deep: #ff7a1a;
+  --ice: #7fdcff;
+  --alarm: #ff4f3a;
+  --violet: #9b7dff;
+  --jade: #58f0b0;
+  --serif: 'Fraunces', 'Times New Roman', serif;
+  --sans: 'Geist Sans', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, monospace;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; height: 100%; background: var(--ink); color: var(--paper); overflow: hidden; }
+body { font-family: var(--sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
