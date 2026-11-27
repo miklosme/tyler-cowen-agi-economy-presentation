@@ -32,6 +32,14 @@ export const slides: SlideDef[] = [
   close,
 ]
 
+/**
+ * Replaces the running program. The /watch player calls this once at startup with its own
+ * ordered list of scenes (some revisited), so stations, flights and the swarm follow the talk.
+ */
+export function setProgram(list: SlideDef[]) {
+  slides.splice(0, slides.length, ...list)
+}
+
 /** Station positions weave through space so every flight has lateral parallax. */
 export function stationOf(i: number): V3 {
   return [Math.sin(i * 0.8) * 26, Math.sin(i * 1.3) * 7, -i * 70]

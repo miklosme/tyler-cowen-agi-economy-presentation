@@ -13,17 +13,17 @@ import { latLonToVec } from '../lib/geo'
 
 /* ------------------------------------------------------------------ globe helpers */
 
-function globeMatrix(yawDeg: number, tilt: number) {
+export function globeMatrix(yawDeg: number, tilt: number) {
   const m = new THREE.Matrix4().makeRotationX(tilt)
   m.multiply(new THREE.Matrix4().makeRotationY((yawDeg * Math.PI) / 180))
   return m
 }
 
-function onGlobe(lat: number, lon: number, m: THREE.Matrix4, lift = 1.0) {
+export function onGlobe(lat: number, lon: number, m: THREE.Matrix4, lift = 1.0) {
   return new THREE.Vector3(...latLonToVec(lat, lon, GLOBE.r * lift)).applyMatrix4(m)
 }
 
-function Beacon({ position, normal, delay, index, color = palette.ember }: { position: THREE.Vector3; normal: THREE.Vector3; delay: number; index: number; color?: string }) {
+export function Beacon({ position, normal, delay, index, color = palette.ember }: { position: THREE.Vector3; normal: THREE.Vector3; delay: number; index: number; color?: string }) {
   const ring = useRef<THREE.Mesh>(null)
   const core = useRef<THREE.Mesh>(null)
   const q = useMemo(() => new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal.clone().normalize()), [normal])
@@ -53,7 +53,7 @@ function Beacon({ position, normal, delay, index, color = palette.ember }: { pos
 
 /* ------------------------------------------------------------------ 13 winners */
 
-const WINNER_CITIES: [string, number, number][] = [
+export const WINNER_CITIES: [string, number, number][] = [
   ['Accra', 5.6, -0.2],
   ['Kinshasa', -4.3, 15.3],
   ['Nairobi', -1.3, 36.8],
@@ -360,15 +360,15 @@ export const physical: SlideDef = {
 
 const MAP_W = 19
 const mapCache = new Map<string, THREE.Vector3>()
-const mapXY = (lat: number, lon: number) => {
+export const mapXY = (lat: number, lon: number) => {
   const k = `${lat},${lon}`
   let v = mapCache.get(k)
   if (!v) mapCache.set(k, (v = new THREE.Vector3((lon / 180) * (MAP_W / 2), (lat / 90) * (MAP_W / 4), 0)))
   return v
 }
-const HUB_US: [number, number] = [38.9, -77.0]
-const HUB_CN: [number, number] = [39.9, 116.4]
-const SWING: [number, number][] = [[48.9, 2.4], [28.6, 77.2], [-6.2, 106.8], [-15.8, -47.9], [6.5, 3.4], [24.7, 46.7]]
+export const HUB_US: [number, number] = [38.9, -77.0]
+export const HUB_CN: [number, number] = [39.9, 116.4]
+export const SWING: [number, number][] = [[48.9, 2.4], [28.6, 77.2], [-6.2, 106.8], [-15.8, -47.9], [6.5, 3.4], [24.7, 46.7]]
 
 const arcVertex = /* glsl */ `
   varying float vU;
@@ -385,7 +385,7 @@ const arcFragment = /* glsl */ `
   }
 `
 
-function Arc({ from, to, color, phase, index, delay }: { from: THREE.Vector3; to: THREE.Vector3; color: string; phase: number; index: number; delay: number }) {
+export function Arc({ from, to, color, phase, index, delay }: { from: THREE.Vector3; to: THREE.Vector3; color: string; phase: number; index: number; delay: number }) {
   const geom = useMemo(() => {
     const mid = from.clone().add(to).multiplyScalar(0.5)
     mid.z += 0.6 + from.distanceTo(to) * 0.42

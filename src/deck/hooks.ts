@@ -1,14 +1,15 @@
 import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { deck, useDeck } from './store'
+import { clock, deck, useDeck, type AgeChannel } from './store'
 
-/** Seconds since slide `index` became active, or -1 while it is not the active slide. */
-export function ageOf(index: number) {
+/**
+ * Seconds since slide `index` became active, or -1 while it is not the active slide.
+ * Deep links / capture jumps skip the flight, so the deck's clock treats them as already arrived.
+ */
+export function ageOf(index: number, channel: AgeChannel = 'build') {
   const d = deck.get()
   if (d.index !== index) return -1
-  const age = performance.now() / 1000 - d.changedAt
-  // Deep links / capture jumps skip the flight; treat them as already arrived.
-  return d.instant ? age + 1.4 : age
+  return clock.age(index, clock.now() - d.changedAt, d.instant, channel)
 }
 
 export function useIsActive(index: number) {

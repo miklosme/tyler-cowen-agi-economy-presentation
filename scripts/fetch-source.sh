@@ -7,3 +7,4 @@ yt-dlp -f "bv*[height<=720]+ba/b[height<=720]" --write-subs --sub-langs en --sub
   -o "source/talk.%(ext)s" "https://www.youtube.com/watch?v=aJlg6o0A_Js"
 python3 -I scripts/vtt-to-transcript.py source/talk.en.vtt > source/transcript.md
 echo "wrote source/transcript.md"
+bash scripts/extract-audio.sh

@@ -19,6 +19,20 @@ Controls:
 - **N**: speaker notes
 - Deep link to a slide with `#/N`, e.g. `#/10`.
 
+## Watch the talk (/watch)
+
+`/watch/` plays Tyler Cowen's original audio and runs the deck's scenes as a film in sync with it:
+http://127.0.0.1:5199/watch/. On-screen text is kept to what the ear can't hold (the speaker, the
+numbers he says, the three job engines); the audio carries the argument.
+
+- The audio is git-ignored, like the video. `bun run audio` extracts it from `source/talk.webm`
+  into `public/audio/` (`bun run fetch-source` does both). Without it the film plays silently.
+- Controls: Space/K play-pause, ← → ±5 s, J/L ±10 s, Shift+← → or [ ] previous/next chapter,
+  0–9 jump, C captions, M mute, F fullscreen. Deep link to a moment with `#t=8:05`.
+- `src/talk/program.tsx` is the edit: one cue per scene with its start time, camera shots, and
+  time warps that move each scene's own beats (a needle, a label, an arc) onto the words.
+- `node scripts/talk-shot.mjs cues` or `node scripts/talk-shot.mjs 8:09 10:30` renders frames.
+
 ## How it's built
 
 - **One persistent particle swarm** (80k points, `src/three/Swarm.tsx`). It flies between slide "stations" with the camera and re-forms into each slide's shape (`src/three/formations.ts`).

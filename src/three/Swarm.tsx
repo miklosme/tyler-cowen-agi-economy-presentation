@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { useFrame, useThree } from '@react-three/fiber'
 import { SWARM_COUNT, getFormation, type Formation, type FormationKey } from './formations'
-import { deck } from '../deck/store'
+import { clock, deck } from '../deck/store'
 import { flightSeconds, slides, stationOf } from '../deck/slides'
 
 const vertex = /* glsl */ `
@@ -262,7 +262,7 @@ export function Swarm() {
       return out
     }
     const d = deck.get()
-    retarget(d.index, true, performance.now() / 1000)
+    retarget(d.index, true, clock.now())
   }, [])
 
   const rotTmp = useMemo(() => new THREE.Matrix3(), [])
@@ -271,13 +271,15 @@ export function Swarm() {
   const m4 = useMemo(() => new THREE.Matrix4(), [])
 
   useFrame((_, dt) => {
-    const now = performance.now() / 1000
+    const now = clock.now()
     const d = deck.get()
     const s = st.current
-    if (d.index !== s.index) retarget(d.index, d.instant, now)
+    // Transitions are timed from the moment the slide changed, so an external clock (the /watch
+    // player's audio time) can scrub back and forth through them.
+    if (d.index !== s.index) retarget(d.index, d.instant, Math.min(now, d.changedAt))
     uniforms.uTime.value += Math.min(dt, 0.1)
     const time = uniforms.uTime.value
-    const raw = Math.min(1, (now - s.started) / s.duration)
+    const raw = Math.min(1, Math.max(0, (now - s.started) / s.duration))
     uniforms.uMix.value = raw
 
     if (s.to) {

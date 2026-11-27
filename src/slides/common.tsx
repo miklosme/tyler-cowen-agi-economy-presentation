@@ -74,7 +74,7 @@ export function Label({
   useFrame(() => {
     const el = ref.current
     if (!el) return
-    const on = ageOf(index) >= delay
+    const on = ageOf(index, 'label') >= delay
     if (on === el.classList.contains('off')) el.classList.toggle('off', !on)
   })
   return (

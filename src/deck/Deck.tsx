@@ -18,7 +18,7 @@ function hashIndex() {
   return m ? Number(m[1]) : 0
 }
 
-function ReadySignal() {
+export function ReadySignal() {
   const n = useRef(0)
   const frames = useRef<number[]>([])
   useFrame(({ gl, scene }) => {
@@ -42,7 +42,7 @@ function ReadySignal() {
 }
 
 /** Keeps one failing set piece from unmounting the whole WebGL tree. */
-class SceneBoundary extends Component<{ name: string; children: ReactNode }, { failed: boolean }> {
+export class SceneBoundary extends Component<{ name: string; children: ReactNode }, { failed: boolean }> {
   override state = { failed: false }
   static getDerivedStateFromError() {
     return { failed: true }
@@ -55,7 +55,7 @@ class SceneBoundary extends Component<{ name: string; children: ReactNode }, { f
   }
 }
 
-function SlideFx() {
+export function SlideFx() {
   const d = useDeck()
   useEffect(() => {
     const s = slides[d.index]
@@ -70,7 +70,7 @@ function SlideFx() {
  * (hidden when far away). Never unmounting avoids drei <Html>'s React 19 unmount race and
  * means shaders compile once, not on every revisit.
  */
-function Scenes() {
+export function Scenes() {
   const d = useDeck()
   const seen = useRef(new Set<number>())
   for (const i of [d.index - 1, d.index, d.index + 1, d.index + 2, d.prev]) if (i >= 0 && i < slides.length) seen.current.add(i)

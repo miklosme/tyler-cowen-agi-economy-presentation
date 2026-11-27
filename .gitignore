@@ -36,3 +36,6 @@ shots
 source/talk.webm
 source/*.webm
 .snapshot
+
+# talk audio for /watch (bun run audio)
+public/audio
